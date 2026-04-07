@@ -39,10 +39,23 @@ active_mission = {"id": None, "log": [], "status": "idle"}
 from core.ai_provider import AIProvider, PROVIDERS
 
 config = {
-    "api_key": os.environ.get("ANTHROPIC_API_KEY","") or os.environ.get("GEMINI_API_KEY",""),
+    "api_key": os.environ.get("GROQ_API_KEY") or os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY") or "",
     "provider": "",
     "model": "",
 }
+
+# Auto-detect provider if key exists in env
+if config["api_key"]:
+    for pid, pinfo in PROVIDERS.items():
+        if pid in ["anthropic", "gemini", "groq", "openai"]:
+             # Simple heuristic for boot
+             if pid == "anthropic" and config["api_key"].startswith("sk-ant"): config["provider"] = pid
+             elif pid == "groq" and config["api_key"].startswith("gsk_"): config["provider"] = pid
+             elif pid == "gemini" and config["api_key"].startswith("AIza"): config["provider"] = pid
+             elif pid == "openai" and config["api_key"].startswith("sk-"): config["provider"] = pid
+    
+    if config["provider"]:
+        config["model"] = PROVIDERS[config["provider"]]["default_model"]
 
 def get_ai():
     return AIProvider(config["api_key"], config["provider"], config["model"])
