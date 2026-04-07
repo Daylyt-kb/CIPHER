@@ -630,12 +630,12 @@ def commander_chat():
         return jsonify({"error": "No message"}), 400
 
     bus = MessageBus()
-    cmd = Commander(api_key=API_KEY)
+    cmd = Commander(api_key=config["api_key"])
     agents = {
         "ghost": GhostAgent(bus),
         "specter": SpecterAgent(bus),
         "scanner": ScannerAgent(bus),
-        "forge": ForgeAgent(bus, api_key=API_KEY),
+        "forge": ForgeAgent(bus, api_key=config["api_key"]),
         "ledger": LedgerAgent(bus),
     }
 
@@ -779,9 +779,8 @@ def main():
     print("  CIPHER Web UI")
     print("  http://localhost:7734")
     print("="*50)
-    if API_KEY or GEMINI_KEY:
-        brain = "Anthropic" if API_KEY else "Gemini"
-        print(f"  AI Mode: ON ({brain} brain activated)")
+    if config["api_key"]:
+        print(f"  AI Mode: ON (Brain activated)")
     else:
         print("  AI Mode: OFF (set API_KEY for AI analysis)")
     print("  Legal: Only scan targets you own or have authorization for")
