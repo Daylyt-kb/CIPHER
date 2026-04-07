@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Env
+.env
+.env.local
+*.env
+
+# CIPHER output (never commit scan results or consent records)
+cipher_output/consent/
+cipher_output/knowledge/
+cipher_output/audit/
+cipher_output/scripts/
+cipher_output/reports/
+cipher_output/m_*.md
+cipher_output/m_*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# API Keys — NEVER commit these
+*.key
+secrets.json

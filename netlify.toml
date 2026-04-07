@@ -1,0 +1,30 @@
+# CIPHER — Netlify Deploy Config
+# Drop the landing/ folder into Netlify, or connect your GitHub repo.
+
+[build]
+  publish = "landing"
+  command = "echo 'Static site — no build needed'"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self';"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Netlify Forms — waitlist
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+  force = false
+
+[context.production]
+  environment = { NODE_VERSION = "20" }

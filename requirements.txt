@@ -1,0 +1,12 @@
+# CIPHER Dependencies
+# Core — required
+anthropic>=0.40.0        # AI brain (optional but recommended)
+rich>=13.0.0             # Beautiful terminal output
+
+# All other tools used by CIPHER are:
+# 1. Kali Linux built-in tools (nmap, nikto, whois, etc.)
+# 2. Python standard library (socket, subprocess, urllib, json, re)
+# No heavy Python dependencies needed.
+
+# Optional enhancements
+requests>=2.31.0         # Better HTTP client

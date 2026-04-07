@@ -1,0 +1,92 @@
+name: CIPHER CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Core Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install rich anthropic requests flask pytest
+
+      - name: Run unit tests
+        run: python3 -m pytest tests/ -v
+
+      - name: Smoke test — tool check
+        run: python3 cipher.py --check-tools
+
+      - name: Smoke test — scope validator
+        run: |
+          python3 -c "
+          from core.scope import ScopeValidator
+          s = ScopeValidator('example.com')
+          s.add_target('192.168.1.0/24')
+          assert s.is_in_scope('example.com')
+          assert s.is_in_scope('sub.example.com')
+          assert not s.is_in_scope('evil.com')
+          assert s.is_in_scope('192.168.1.50')
+          print('Scope validator: ALL PASS')
+          "
+
+      - name: Smoke test — Commander
+        run: |
+          python3 -c "
+          from agents.commander import Commander
+          cmd = Commander()
+          target = cmd._extract_target('scan mysite.com')
+          assert target == 'mysite.com', f'Got: {target}'
+          safe = cmd._basic_safety_check('hack without permission')
+          assert not safe
+          print('Commander: ALL PASS')
+          "
+
+      - name: Smoke test — MIRROR agent
+        run: |
+          python3 -c "
+          from agents.mirror import MirrorAgent, INJECTION_PAYLOADS
+          m = MirrorAgent()
+          assert len(INJECTION_PAYLOADS) >= 10
+          print(f'MIRROR: {len(INJECTION_PAYLOADS)} payloads loaded — PASS')
+          "
+
+      - name: Smoke test — LEDGER report
+        run: |
+          python3 -c "
+          from agents.neuron_ledger import LedgerAgent
+          from core.bus import MessageBus
+          ledger = LedgerAgent(MessageBus())
+          results = {'recon': {'findings': [
+            {'type': 'test', 'title': 'Test finding', 'severity': 'high', 'tool': 'test', 'data': {}}
+          ]}}
+          report = ledger.generate('test.com', results, 'ci_test', '')
+          assert report['risk_level'] in ('HIGH', 'CRITICAL', 'MEDIUM', 'LOW', 'MINIMAL')
+          assert 'markdown' in report
+          print('LEDGER: ALL PASS')
+          "
+
+      - name: Smoke test — Web UI routes
+        run: |
+          python3 -c "
+          import web_ui
+          app = web_ui.app
+          app.config['TESTING'] = True
+          client = app.test_client()
+          resp = client.get('/')
+          assert resp.status_code == 200
+          assert b'CIPHER' in resp.data
+          print('Web UI: ALL PASS')
+          "
