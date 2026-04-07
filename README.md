@@ -151,15 +151,28 @@ Reports are saved to `./cipher_output/`:
 
 ---
 
-## Roadmap
+## What's built
 
-- [ ] BREACH agent (controlled exploitation)
-- [ ] MIRROR agent (AI-vs-AI red teaming)  
-- [ ] Web UI (browser interface)
-- [ ] NEURON live CVE feed integration
-- [ ] Telegram bot interface
-- [ ] Multi-target batch scanning
-- [ ] Plugin marketplace (FORGE templates)
+- [x] GHOST — network recon agent
+- [x] SPECTER — OSINT agent  
+- [x] SCANNER — vulnerability detection agent
+- [x] BREACH — controlled exploitation (14 canary payloads, audit trail)
+- [x] FORGE — live script generation agent
+- [x] MIRROR — AI-vs-AI red team (OWASP LLM Top 10)
+- [x] NEURON — self-upgrade loop (SQLite, NVD CVE feed, MITRE ATT&CK, ExploitDB)
+- [x] LEDGER — plain English report generator
+- [x] COMMANDER — universal AI orchestration (Anthropic/Gemini/Groq/OpenAI/Mistral)
+- [x] Web UI — browser interface at localhost:7734
+- [x] Telegram bot — zero-cost mobile interface (telegram_bot.py)
+- [x] Multi-provider AI — switch providers from Settings tab, no restart
+- [x] 26/26 tests passing
+
+## Coming next
+
+- [ ] Docker sandbox for FORGE scripts (replaces AST-only validation)
+- [ ] WebSocket terminal (replaces HTTP polling in web UI)
+- [ ] MSSP white-label API
+- [ ] Playbook marketplace
 
 ---
 
@@ -177,8 +190,9 @@ Star the repo if this helped you. That's the only ask.
 
 ## Author
 
-Built in public. Follow the journey: [@Daylyt-kb](https://twitter.com/Daylyt-kb)
+Built by Kebron Isaias — [LinkedIn](https://www.linkedin.com/in/kebron-isaias-0716aa2b7) · [GitHub](https://github.com/Daylyt-kb)
 
 ---
 
 *CIPHER — The security swarm the world needed but nobody built.*
+
