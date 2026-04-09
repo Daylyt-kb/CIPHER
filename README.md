@@ -176,23 +176,27 @@ Reports are saved to `./cipher_output/`:
 
 ---
 
-## Contributing
+## 🤝 Support the Mission
 
-Built by one person with zero budget. Contributions welcome.
+CIPHER was built by one person with zero budget. If you find value in this project, here is how you can help us reach our goal of **100 stars**:
 
-```
+1. **Star the Repo**: It helps others find the tool.
+2. **Open an Issue**: Found a bug? Have a feature request? Let us know.
+3. **Contribute**: Check the `Coming next` list and submit a PR.
+
+```bash
 Fork → Build → PR
 ```
 
-Star the repo if this helped you. That's the only ask.
+---
+
+## 🏗️ Author
+
+Built with conviction by **Kebron Isaias** — [LinkedIn](https://www.linkedin.com/in/kebron-isaias-0716aa2b7) · [GitHub](https://github.com/Daylyt-kb)
 
 ---
 
-## Author
-
-Built by Kebron Isaias — [LinkedIn](https://www.linkedin.com/in/kebron-isaias-0716aa2b7) · [GitHub](https://github.com/Daylyt-kb)
-
----
+*CIPHER — The security swarm the world needed but nobody built.*
 
 *CIPHER — The security swarm the world needed but nobody built.*
 
