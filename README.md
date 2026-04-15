@@ -5,198 +5,259 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Kali Linux](https://img.shields.io/badge/Kali-Linux-557C94?logo=kali-linux)](https://www.kali.org/)
+[![Tests](https://img.shields.io/badge/tests-26%2F26%20passing-brightgreen)](tests/)
+[![Ollama](https://img.shields.io/badge/Ollama-local%20models-black)](https://ollama.com)
 
-CIPHER is an AI security swarm that runs in your terminal. Tell it what you want to test in plain English — it deploys specialist agents, pulls the right Kali tools, writes custom scripts when needed, and returns a clean report.
+CIPHER is an AI security swarm that runs in your terminal and browser. Tell it what you want to test in plain English — it deploys 9 specialist agents, pulls the right Kali tools, writes custom scripts when no tool exists, and returns a plain English report.
 
-**No cloud required. No server bills. No expertise needed.**
+**No cloud required. No server bills. No expertise needed. Works fully offline with Ollama.**
+
+---
+
+## AI Providers — Cloud & Local
+
+CIPHER works with **any** of these. Switch from the browser Settings tab — no restart, no code changes.
+
+### 🖥️ Local (Free · Private · No API key needed)
+
+| Provider | Setup | Models | Privacy |
+|----------|-------|--------|---------|
+| **Ollama** | `curl -fsSL https://ollama.com/install.sh \| sh` | llama3.2, mistral, codellama, deepseek-r1, phi3, qwen2.5 | 100% local |
+| **LM Studio** | Download at lmstudio.ai → Load model → Start server | Any GGUF model | 100% local |
+
+```bash
+# Quickstart with Ollama (recommended for privacy)
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull llama3.2
+ollama serve
+# Then run CIPHER — it auto-detects Ollama
+python3 cipher.py --interactive
+```
+
+### ☁️ Cloud (API key required)
+
+| Provider | Free Tier | Key Prefix | Get Key |
+|----------|-----------|------------|---------|
+| **Groq** | ✅ Free | `gsk_` | [console.groq.com](https://console.groq.com) |
+| **Google Gemini** | ✅ Free | `AIzaSy` | [aistudio.google.com](https://aistudio.google.com) |
+| **Anthropic Claude** | No | `sk-ant-` | [console.anthropic.com](https://console.anthropic.com) |
+| **OpenAI** | No | `sk-` | [platform.openai.com](https://platform.openai.com) |
+| **Mistral** | No | `MIST` | [console.mistral.ai](https://console.mistral.ai) |
+
+```bash
+# Free cloud option — Groq (fastest, no credit card)
+export GROQ_API_KEY="gsk_your_key_here"
+python3 cipher.py --interactive
+
+# Or set in the web UI Settings tab — no restart needed
+python3 web_ui.py
+# → open localhost:7734 → Settings → paste any key
+```
+
+> **No key at all?** CIPHER still runs. Recon, OSINT, and scanning work without AI — the AI brain enhances report analysis and FORGE script generation.
+
+---
+
+## The Swarm — 9 Agents
+
+| Agent | Name | Role |
+|-------|------|------|
+| 🔍 | **GHOST** | Network recon — DNS, ports, tech stack, subdomains, security headers |
+| 🌐 | **SPECTER** | OSINT — cert transparency, robots.txt, emails, Google dorks |
+| 🛡️ | **SCANNER** | Vulnerability detection — nikto, nuclei, SSL, exposed files |
+| 💥 | **BREACH** | Controlled exploitation — 14 canary payloads, SHA-256 audit trail |
+| ⚡ | **FORGE** | Script generation — writes Python when no tool covers a gap |
+| 🤖 | **MIRROR** | AI-vs-AI red team — OWASP LLM Top 10 against AI endpoints |
+| 🧠 | **NEURON** | Self-upgrade — hourly CVE feeds, MITRE ATT&CK, local SQLite |
+| 📋 | **LEDGER** | Reports — CVSS scores, plain English, developer remediation |
+| 🎯 | **COMMANDER** | Brain — understands plain English, orchestrates everything |
 
 ---
 
 ## What makes CIPHER different
 
-Every existing AI security tool requires enterprise procurement, a dedicated security team, or a $50K contract. CIPHER runs on your laptop for free.
-
 | | Traditional Pentest | Existing AI Tools | CIPHER |
 |---|---|---|---|
-| Cost | $10K–$100K | $500+/month | Free |
-| Setup | Days | Hours | 1 command |
-| Requires expertise | Yes | Yes | No |
-| Plain English interface | No | Partial | Yes |
-| Runs offline | No | No | Yes |
-| Script generation | No | No | Yes (FORGE) |
-| AI-vs-AI testing | No | No | Yes (MIRROR) |
-
----
-
-## The Swarm
-
-CIPHER deploys 9 specialized agents in parallel:
-
-| Agent | Name | Role |
-|-------|------|------|
-| 🔍 | **GHOST** | Network recon — maps every open door |
-| 🌐 | **SPECTER** | OSINT — hunts what the internet already knows |
-| 🛡️ | **SCANNER** | Vulnerability detection — finds the weaknesses |
-| 💥 | **BREACH** | Controlled exploitation — proves it's real |
-| ⚡ | **FORGE** | Script generation — writes code when no tool exists |
-| 🤖 | **MIRROR** | AI-vs-AI — tests your AI agents for attacks |
-| 🧠 | **NEURON** | Self-upgrade — learns new CVEs and techniques 24/7 |
-| 📋 | **LEDGER** | Reports — translates findings to plain English |
-| 🎯 | **COMMANDER** | Brain — understands you and orchestrates everything |
+| Cost | $10K–$100K | $500+/month | **Free** |
+| Local models | No | No | **Yes (Ollama)** |
+| Runs fully offline | No | No | **Yes** |
+| Setup | Days | Hours | **1 command** |
+| Requires expertise | Yes | Yes | **No** |
+| Script generation | No | No | **Yes (FORGE)** |
+| AI-vs-AI testing | No | No | **Yes (MIRROR)** |
+| Plain English | No | Partial | **Yes** |
 
 ---
 
 ## Install
 
 ```bash
-git clone https://github.com/Daylyt-kb/cipher.git
-cd cipher
+git clone https://github.com/Daylyt-kb/CIPHER.git
+cd CIPHER
 chmod +x install.sh && ./install.sh
 ```
 
-That's it. CIPHER works with whatever Kali tools you have installed. Missing tools are skipped gracefully.
+CIPHER works with whatever Kali tools you have. Missing tools are skipped gracefully — it falls back to pure Python implementations.
 
 ---
 
 ## Usage
 
-### Interactive shell (recommended)
+### Browser UI (recommended)
+```bash
+python3 web_ui.py
+# Open http://localhost:7734
+```
+
+Set your AI provider in the Settings tab. Enter a target. Deploy the swarm.
+
+### Interactive shell
 ```bash
 python3 cipher.py --interactive
 ```
 
-Then just talk:
 ```
 cipher> scan mywebsite.com
-cipher> osint check company.com  
-cipher> forge a script to enumerate all admin panels
+cipher> osint check company.com
+cipher> forge a script to enumerate all subdomains
 cipher> full test 192.168.1.0/24
 ```
 
 ### Direct scan
 ```bash
-# Recon only (port scan + technology fingerprint)
+# Surface recon
 python3 cipher.py -t mysite.com -m recon --authorized
 
-# OSINT sweep
-python3 cipher.py -t mydomain.com -m osint --authorized
-
-# Full swarm (recon + OSINT + vuln scan)
+# Full swarm
 python3 cipher.py -t mysite.com -m full --authorized
 
-# Check what tools you have
+# AI-vs-AI audit (for AI-powered apps)
+python3 cipher.py -t myapp.com -m ai-audit --authorized
+
+# Check installed tools
 python3 cipher.py --check-tools
 ```
 
-### With AI (optional — richer analysis)
+### Telegram bot (zero hosting cost)
 ```bash
-export ANTHROPIC_API_KEY='your-key-here'
-python3 cipher.py --interactive
+# Get token from @BotFather on Telegram
+export TELEGRAM_BOT_TOKEN="your-token"
+python3 telegram_bot.py
+# Users can now scan via /scan, /osint, /full commands
 ```
-
-Get a free Anthropic API key at [console.anthropic.com](https://console.anthropic.com) — the free tier is enough for many scans.
 
 ---
 
 ## What CIPHER checks
 
 **GHOST (Recon)**
-- DNS resolution & reverse DNS
-- WHOIS / registrar info
+- DNS resolution, reverse DNS, WHOIS
 - Port scan (nmap or socket fallback)
-- Technology fingerprint (Apache, Nginx, WordPress, PHP, etc.)
-- Security headers (HSTS, CSP, X-Frame-Options)
-- Subdomain enumeration
+- Technology fingerprint (Apache, Nginx, WordPress, PHP, Cloudflare...)
+- Security headers (HSTS, CSP, X-Frame-Options, Permissions-Policy)
+- Subdomain enumeration (amass or DNS bruteforce)
 
 **SPECTER (OSINT)**
+- Certificate transparency via crt.sh
 - Email harvesting via theHarvester
-- Certificate transparency (crt.sh)
-- robots.txt hidden paths
+- robots.txt disallowed paths
 - Google dork generation
 - GitHub exposure hints
 
 **SCANNER (Vulnerabilities)**
 - Nikto web server scan
-- SSL/TLS issues
-- Nuclei template scan
-- Exposed sensitive files (.env, .git, phpinfo, swagger)
-- Spring Boot actuator exposure
+- SSL/TLS audit
+- Nuclei template scan (high/critical)
+- Exposed files: `.env`, `.git`, `phpinfo.php`, `/actuator`, `/swagger-ui`
+
+**BREACH (Exploitation)**
+- 14 non-destructive canary payloads
+- SQL injection, XSS, SSRF, open redirect, command injection, path traversal, XXE
+- Immutable SHA-256 signed audit trail
+- Subdomain takeover detection
 
 **FORGE (Script Generation)**
-- Writes custom Python scripts when no tool covers a gap
+- Generates Python/Bash scripts for gaps no tool covers
 - AST-validated before execution
 - Saved to `./cipher_output/scripts/`
+
+**MIRROR (AI Red Team)**
+- Tests AI-powered apps for OWASP LLM Top 10
+- Prompt injection, tool-call exfiltration, memory poisoning, jailbreaks
+- Works against any HTTP endpoint
+
+**NEURON (Intelligence)**
+- Hourly CVE ingest from NVD API (free, no key)
+- MITRE ATT&CK techniques from GitHub
+- ExploitDB RSS feed
+- Local SQLite — data never leaves your machine
 
 ---
 
 ## Legal
 
-CIPHER is **legal-by-design**. Every scan requires explicit authorization.
+CIPHER is **legal-by-design**. Authorization is enforced at the architecture level.
 
-- The `--authorized` flag is a legal confirmation
-- Consent records are saved with timestamps
-- Scope validation blocks out-of-scope targets
-- No action runs against unauthorized targets — this is architecture, not a checkbox
+- Scope is SHA-256 signed — out-of-scope targets throw `PermissionError`, not a warning
+- Consent records saved with timestamps for every session
+- BREACH agent uses non-destructive canary payloads only
+- High-risk actions require explicit Commander approval
 
-**Only test systems you own or have written permission to test.**  
-Unauthorized scanning is illegal under the CFAA (USA), Computer Misuse Act (UK), and equivalent laws worldwide.
+**Only test systems you own or have written permission to test.**
 
 ---
 
 ## Output
 
-Reports are saved to `./cipher_output/`:
-- `mission_[id]_report.json` — full structured data
-- `mission_[id]_report.md` — human-readable Markdown report
+Reports saved to `./cipher_output/`:
+- `mission_[id]_report.md` — human-readable with CVSS scores
+- `mission_[id]_report.json` — structured data for integrations
+- `audit/` — SHA-256 signed audit trail for each BREACH action
 
 ---
 
 ## What's built
 
-- [x] GHOST — network recon agent
-- [x] SPECTER — OSINT agent  
-- [x] SCANNER — vulnerability detection agent
-- [x] BREACH — controlled exploitation (14 canary payloads, audit trail)
-- [x] FORGE — live script generation agent
-- [x] MIRROR — AI-vs-AI red team (OWASP LLM Top 10)
-- [x] NEURON — self-upgrade loop (SQLite, NVD CVE feed, MITRE ATT&CK, ExploitDB)
-- [x] LEDGER — plain English report generator
-- [x] COMMANDER — universal AI orchestration (Anthropic/Gemini/Groq/OpenAI/Mistral)
-- [x] Web UI — browser interface at localhost:7734
-- [x] Telegram bot — zero-cost mobile interface (telegram_bot.py)
-- [x] Multi-provider AI — switch providers from Settings tab, no restart
+- [x] GHOST, SPECTER, SCANNER, BREACH, FORGE, MIRROR, NEURON, LEDGER, COMMANDER
+- [x] Web UI — browser interface at localhost:7734 (`web_ui.py`)
+- [x] Telegram bot — zero-cost mobile interface (`telegram_bot.py`)
+- [x] Ollama support — fully local, fully private, zero cost
+- [x] Multi-provider AI — Anthropic, Gemini, OpenAI, Groq, Mistral, Ollama, LM Studio
+- [x] NEURON — live CVE/ATT&CK/ExploitDB feeds → local SQLite
 - [x] 26/26 tests passing
 
 ## Coming next
 
-- [ ] Docker sandbox for FORGE scripts (replaces AST-only validation)
-- [ ] WebSocket terminal (replaces HTTP polling in web UI)
+- [ ] Docker sandbox for FORGE (replaces AST-only validation)
+- [ ] WebSocket real-time terminal (replaces HTTP polling)
 - [ ] MSSP white-label API
+- [ ] Multi-target batch scanning
 - [ ] Playbook marketplace
 
 ---
 
-## 🤝 Support the Mission
+## Contributing
 
-CIPHER was built by one person with zero budget. If you find value in this project, here is how you can help us reach our goal of **100 stars**:
+Built by one person with zero budget. All contributions welcome.
 
-1. **Star the Repo**: It helps others find the tool.
-2. **Open an Issue**: Found a bug? Have a feature request? Let us know.
-3. **Contribute**: Check the `Coming next` list and submit a PR.
-
-```bash
+```
 Fork → Build → PR
 ```
 
+Found a bug? Open an issue.  
+Built something cool with CIPHER? PR it.  
+Star the repo if this helped you.
+
 ---
 
-## 🏗️ Author
+## Author
 
-Built with conviction by **Kebron Isaias** — [LinkedIn](https://www.linkedin.com/in/kebron-isaias-0716aa2b7) · [GitHub](https://github.com/Daylyt-kb)
+**Kebron Isaias** — Builder · Security Enthusiast · Zero Budget Founder
+
+Building enterprise-grade security tools that work for everyone, not just companies with $50K budgets.
+
+[LinkedIn](https://www.linkedin.com/in/kebron-isaias-0716aa2b7) · [GitHub](https://github.com/Daylyt-kb) · [Live Demo](https://cipher-ss.netlify.app)
 
 ---
 
 *CIPHER — The security swarm the world needed but nobody built.*
-
-*CIPHER — The security swarm the world needed but nobody built.*
-
